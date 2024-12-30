@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Favorites</title>
+    <style>
+        /* Basic styling for the favorites */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .favorites-summary {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        .btn-success {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: green;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .btn-remove {
+            color: red;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <section class="favorites-summary">
+        <h3>Your Favorites</h3>
+        <ul id="favorite-items">
+            <!-- Items will be rendered dynamically here -->
+        </ul>
+        <p><strong>Total Favorites:</strong> <span id="favorites-total">0</span></p>
+    </section>
+
+    <script>
+        // Function to render favorite items
+        function renderFavorites() {
+            const favoriteItems = JSON.parse(localStorage.getItem('favoriteItems')) || [];
+            const favoritesContainer = document.getElementById('favorite-items');
+            const totalContainer = document.getElementById('favorites-total');
+
+            // Clear existing content
+            favoritesContainer.innerHTML = '';
+            let total = 0;
+
+            // Add items to the favorites display
+            favoriteItems.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item.name; // Displaying the item name
+
+                // Create a "Remove" button for each item
+                const removeBtn = document.createElement('span');
+                removeBtn.textContent = 'Remove';
+                removeBtn.classList.add('btn-remove');
+                // Set up the click handler for the remove button, passing the item name
+                removeBtn.addEventListener('click', () => removeFavorite(item.name));
+
+                // Append remove button to list item
+                li.appendChild(removeBtn);
+                favoritesContainer.appendChild(li);
+
+                total++;
+            });
+
+            // Update the total count of favorites
+            totalContainer.textContent = total;
+        }
+
+        // Function to remove a specific favorite item by its name
+        function removeFavorite(itemName) {
+            let favoriteItems = JSON.parse(localStorage.getItem('favoriteItems')) || [];
+            
+            // Filter out the item that matches the itemName (removes only that one item)
+            favoriteItems = favoriteItems.filter(item => item.name !== itemName);
+            
+            // Save the updated list back to localStorage
+            localStorage.setItem('favoriteItems', JSON.stringify(favoriteItems));
+
+            // Re-render the updated list
+            renderFavorites();
+        }
+
+        // Function to add item to favorites and prevent duplicates based on name
+        function addToFavorites(item) {
+            let favoriteItems = JSON.parse(localStorage.getItem('favoriteItems')) || [];
+
+            // Check if item already exists in favorites (based on the item's name)
+            const isDuplicate = favoriteItems.some(favItem => favItem.name === item.name);
+
+            if (isDuplicate) {
+                alert("This item is already in your favorites.");
+            } else {
+                // Add the item to favorites if it's not a duplicate
+                favoriteItems.push(item);
+                localStorage.setItem('favoriteItems', JSON.stringify(favoriteItems));
+                alert("Item added to your favorites.");
+            }
+        }
+
+        // Initial render on page load
+        window.onload = renderFavorites;
+    </script>
+</body>
+</html>

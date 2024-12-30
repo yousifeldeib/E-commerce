@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ category['name'] }} - Product Category</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        header {
+            background-color: #000000;
+            color: #fff;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+        }
+
+        .products {
+            padding: 40px 20px;
+        }
+
+        .products h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .products ul {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: space-around;
+        }
+
+        .products li {
+            list-style: none;
+            width: 300px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .products li:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-item {
+            display: flex;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .product-image {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+
+        .product-details {
+            flex: 1;
+        }
+
+        .product-details h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .product-details p {
+            margin: 5px 0;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        footer p {
+            font-size: 1rem;
+        }
+
+        @media screen and (max-width: 768px) {
+            .products ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .products li {
+                width: 90%;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+
+            header p {
+                font-size: 1rem;
+            }
+
+            .products h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>{{ category['name'] }}</h1>
+        <p>Explore our collection of products in the {{ category['name'] }} category.</p>
+    </header>
+
+    <section class="products">
+        <h2>Products in this Category</h2>
+
+        <!-- Check if there are products in the category -->
+        {% if products %}
+            <ul>
+                {% for product in products %}
+                    <li>
+                        <div class="product-item">
+                            <!-- Display product image (assuming product['image_url'] contains the image URL) -->
+                          
+                            
+                            <div class="product-details">
+                                <h3>{{ product['name'] }}</h3>
+                                <p>{{ product['description'] }}</p>
+                                <p>Price: ${{ product['price'] }}</p>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No products available in this category at the moment.</p>
+        {% endif %}
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Your E-Commerce Site. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

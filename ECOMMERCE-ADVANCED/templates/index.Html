@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E-Commerce</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+      .cart-summary {
+        margin: 20px 0;
+        padding: 15px;
+        background-color: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      .cart-summary ul {
+        list-style: none;
+        padding: 0;
+      }
+      .cart-summary ul li {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+      }
+      .cart-summary button {
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header-home">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 logo">
+            <a href="#"> Our Commerce </a>
+          </div>
+          <div class="col-md-6 d-flex justify-content-center align-items-center">
+            <a href="{{ url_for('add_to_favorite') }}" class="btn btn-success btn mx-2">Favorite</a>
+            <a href="{{ url_for('aboutus') }}"class="btn btn-info btn mx-2">About Us</a>
+            <a href="{{ url_for('search') }}" class="btn btn-info btn mx-2"><span>Search</span></a>
+            <a href="{{ url_for('login') }}" class="btn btn-secondary btn mx-2">Login</a>
+            <a href="{{ url_for('signup') }}" class="btn btn-success btn mx-2">Sign Up</a>
+            <a href="{{ url_for('cart', user_id=user_id) }}" class="btn btn-info mx-2">Cart</a>
+            <a href="{{ url_for('profile', user_id=user_id) }}" class="btn btn-secondary btn mx-2">Profile</a>
+            <button onclick="toggleTheme()" class="btn btn-dark btn mx-2">Dark Mode</button>
+            <button onclick="alert('Gmail:ecommerce@gmail.com')" class="btn btn-warning btn mx-2">Need help?CONTACT US</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <hr />
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="banner">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <img
+              src="{{ url_for('static', filename='images/EE.jpg') }}"
+              alt="E-Commerce Banner"
+            />
+          </div>
+          <div class="col-md-6 right">
+            <h1>Welcome to our store</h1>
+            <p>
+              Unlock the future of shopping with our seamless E-commerce
+              platform, offering a vast selection of high-quality products,
+              secure payment options, and lightning-fast delivery, all designed
+              to provide you with an unparalleled online shopping experience
+              from the comfort of your home.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <main class="main-home">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="categories">
+              <a href="{{ url_for('electronics') }}" class="btn btn-info btn mx-2">Electronics</a>
+              <a href="{{ url_for('fashion') }}" class="btn btn-info btn mx-2">Fashion</a>
+              <a href="{{ url_for('home_and_kitchen') }}" class="btn btn-info btn mx-2">Home & Kitchen</a>
+              <a href="{{ url_for('sports_and_outdoor') }}" class="btn btn-info btn mx-2">Sports & Outdoor</a>
+            </div>
+            <h2>The best and best-selling products:</h2>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <section class="Products-home">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 item">
+            <img src="{{ url_for('static', filename='images/ps5.jpeg') }}" alt="PS5">
+            <h3>PS5</h3>
+            <p>Price: $750</p>
+            <button onclick="addToCartAndRedirect(1, 'PS5', 750)">Add to Cart</button>
+            <button class="favorite-button" onclick="addToFavorites('PS5', 750)">Add to Favorites</button>
+          </div>
+          <div class="col-md-3 item">
+            <img src="{{ url_for('static', filename='images/iphone.jpg') }}" alt="iphone 15" />
+            <h3>iphone 15</h3>
+            <p>Price: $800</p>
+            <button onclick="addToCartAndRedirect(2, 'iPhone 15', 800)">Add to Cart</button>
+            <button class="favorite-button" onclick="addToFavorites('iPhone 15', 800)">Add to Favorites</button>
+          </div>
+          <div class="col-md-3 item">
+            <img src="{{ url_for('static', filename='images/chess.jpeg') }}" alt="Chess Board" />
+            <h3>Chess Board</h3>
+            <p>Price: $9</p>
+            <button onclick="addToCartAndRedirect(3, 'Chess Board', 9)">Add to Cart</button>
+            <button class="favorite-button" onclick="addToFavorites('Chess Board', 9)">Add to Favorites</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer-home">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <p>&copy; 2024 My Simple Store</p>
+            <div class="social-icons">
+              <a href="#">Facebook</a>
+              <a href="#">Twitter</a>
+              <a href="#">Instagram</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+    <script>
+      function addToCartAndRedirect(id, name, price) {
+          let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+          cartItems.push({ id, name, price });
+          localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      }
+
+      // Function to add item to favorites and redirect to addtofavourite.html
+      function addToFavorites(name, price) {
+          let favoriteItems = JSON.parse(localStorage.getItem('favoriteItems')) || [];
+          favoriteItems.push({ name, price });
+          localStorage.setItem('favoriteItems', JSON.stringify(favoriteItems));
+
+        
+      }
+  </script>
+  </body>
+</html>
