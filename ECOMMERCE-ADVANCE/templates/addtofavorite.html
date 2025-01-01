@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Favorites</title>
+    <style>
+        /* Basic styling for the favorites */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .favorites-summary {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 10px;
+        }
+        .btn-success {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: green;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .btn-remove {
+            color: red;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <section class="favorites-summary">
+        <h3>Your Favorites</h3>
+        <ul id="favorite-items">
+            
+        </ul>
+        <p><strong>Total Favorites:</strong> <span id="favorites-total">0</span></p>
+    </section>
+
+    <script>
+        function renderFavorites() {
+            const favoriteItems = JSON.parse(localStorage.getItem('favoriteItems')) || [];
+            const favoritesContainer = document.getElementById('favorite-items');
+            const totalContainer = document.getElementById('favorites-total');
+
+           
+            favoritesContainer.innerHTML = '';
+            let total = 0;
+
+            
+            favoriteItems.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item.name;
+
+                
+                const removeBtn = document.createElement('span');
+                removeBtn.textContent = 'Remove';
+                removeBtn.classList.add('btn-remove');
+                
+                removeBtn.addEventListener('click', () => removeFavorite(item.name));
+
+                
+                li.appendChild(removeBtn);
+                favoritesContainer.appendChild(li);
+
+                total++;
+            });
+
+            
+            totalContainer.textContent = total;
+        }
+
+       
+        function removeFavorite(itemName) {
+            let favoriteItems = JSON.parse(localStorage.getItem('favoriteItems')) || [];
+            
+            
+            favoriteItems = favoriteItems.filter(item => item.name !== itemName);
+            
+            
+            localStorage.setItem('favoriteItems', JSON.stringify(favoriteItems));
+
+            
+            renderFavorites();
+        }
+
+        
+        function addToFavorites(item) {
+            let favoriteItems = JSON.parse(localStorage.getItem('favoriteItems')) || [];
+
+            
+            const isDuplicate = favoriteItems.some(favItem => favItem.name === item.name);
+
+            if (isDuplicate) {
+                alert("This item is already in your favorites.");
+            } else {
+                
+                favoriteItems.push(item);
+                localStorage.setItem('favoriteItems', JSON.stringify(favoriteItems));
+                alert("Item added to your favorites.");
+            }
+        }
+
+        
+        window.onload = renderFavorites;
+    </script>
+</body>
+</html>

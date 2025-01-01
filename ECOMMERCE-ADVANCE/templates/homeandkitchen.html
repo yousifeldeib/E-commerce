@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home & Kitchen</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  </head>
+  <body>
+    <section class="Products-home">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3 item">
+            <img src="{{ url_for('static', filename='images/knife.jpeg') }}" alt="Knife" />
+            <h3>Knife</h3>
+            <p>Price: $20</p>
+            <button onclick="addToCartAndRedirect(1, 'Knife', 20)" class="btn btn-primary">Add to Cart</button>
+            <button class="favorite-button" onclick="addToFavorites('Knife', 20)">Add to Favorites</button>
+          </div>
+          <div class="col-md-3 item">
+            <img src="{{ url_for('static', filename='images/lamp.jpeg') }}" alt="Lamp" />
+            <h3>Lamp</h3>
+            <p>Price: $50</p>
+            <button onclick="addToCartAndRedirect(2, 'Lamp', 50)" class="btn btn-primary">Add to Cart</button>
+            <button class="favorite-button" onclick="addToFavorites('Lamp', 50)">Add to Favorites</button>
+          </div>
+          <div class="col-md-3 item">
+            <img src="{{ url_for('static', filename='images/Pillow.jpeg')}}" alt="Pillow" />
+            <h3>Pillow</h3>
+            <p>Price: $20</p>
+            <button onclick="addToCartAndRedirect(3, 'Pillow', 20)" class="btn btn-primary">Add to Cart</button>
+            <button class="favorite-button" onclick="addToFavorites('Pillow', 20)">Add to Favorites</button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+    <script>
+      
+      function addToCartAndRedirect(id, name, price) {
+        let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        cartItems.push({ id, name, price });
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+      }
+
+      
+      function addToFavorites(name, price) {
+        let favoriteItems = JSON.parse(localStorage.getItem('favoriteItems')) || [];
+        favoriteItems.push({ name, price });
+        localStorage.setItem('favoriteItems', JSON.stringify(favoriteItems));
+
+        
+      }
+    </script>
+
+    
+  </body>
+</html>
